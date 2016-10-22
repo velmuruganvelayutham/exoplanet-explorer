@@ -35,14 +35,7 @@ Instructions:
 
     Your code goes here!
      */
-     var promise = new Promise(function(resolve,reject){
-                fetch(url).then(function(res){
-                  resolve(res);
-                }).catch(function(){
-                  reject('unknown');
-                });
-     });
-     return promise;
+    return fetch(url);
   }
 
   /**
@@ -56,14 +49,10 @@ Instructions:
 
     Your code goes here!
      */
-     var promise = new Promise(function(resolve,reject){
-                get(url).then(function(res){
-                  resolve(res.json());
-                }).catch(function(){
-                  reject('unknown');
-                });
-     });
-     return promise;
+     
+     return get(url).then(function(res){
+      return res.json()
+    });
 
   }
 
