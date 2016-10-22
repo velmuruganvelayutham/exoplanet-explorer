@@ -20,6 +20,7 @@ Instructions:
    */
   function addSearchHeader(response) {
     try {
+      console.log('response is '+ response);
       response = JSON.parse(response).query;  // you'll be moving this line out of here in the next quiz!
     } catch (e) {
       // it's 'unknown', so leave it alone
@@ -36,22 +37,30 @@ Instructions:
     /*
     This code needs to get wrapped in a Promise!
      */
-    var req = new XMLHttpRequest();
-    req.open('GET', url);
-    req.onload = function() {
-      if (req.status === 200) {
-        // It worked!
-        // You'll want to resolve with the data from req.response
-      } else {
-        // It failed :(
-        // Be nice and reject with req.statusText
-      }
-    };
-    req.onerror = function() {
-      // It failed :(
-      // Pass a 'Network Error' to reject
-    };
-    req.send();
+     var promise = new Promise(function(resolve,reject){
+          var req = new XMLHttpRequest();
+          req.open('GET', url);
+          req.onload = function() {
+            if (req.status === 200) {
+              resolve(req.response);
+              // It worked!
+              // You'll want to resolve with the data from req.response
+            } else {
+              // It failed :(
+              // Be nice and reject with req.statusText
+              reject(req.statusText);
+            }
+          };
+          req.onerror = function() {
+            reject('Network Error');
+            // It failed :(
+            // Pass a 'Network Error' to reject
+          };
+          req.send();
+           });
+    
+
+    return promise;
   }
 
   window.addEventListener('WebComponentsReady', function() {
@@ -61,6 +70,6 @@ Instructions:
     You'll need to add a .then and a .catch. Pass the response to addSearchHeader on resolve or
     pass 'unknown' to addSearchHeader if it rejects.
      */
-    // get('../data/earth-like-results.json')
+     get('../data/earth-like-results.json').then(addSearchHeader).catch(addSearchHeader);
   });
 })(document);
