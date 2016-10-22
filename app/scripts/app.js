@@ -20,7 +20,7 @@ Instructions:
    * @param {String} query - The search query.
    */
   function addSearchHeader(query) {
-    home.innerHTML = '<h2 class="page-title">query: ' + query + '</h2>';
+    home.innerHTML = '<h2 class="page-title">query: ' + query.query + '</h2>';
   }
 
   /**
@@ -35,6 +35,14 @@ Instructions:
 
     Your code goes here!
      */
+     var promise = new Promise(function(resolve,reject){
+                fetch(url).then(function(res){
+                  resolve(res);
+                }).catch(function(){
+                  reject('unknown');
+                });
+     });
+     return promise;
   }
 
   /**
@@ -48,6 +56,15 @@ Instructions:
 
     Your code goes here!
      */
+     var promise = new Promise(function(resolve,reject){
+                get(url).then(function(res){
+                  resolve(res.json());
+                }).catch(function(){
+                  reject('unknown');
+                });
+     });
+     return promise;
+
   }
 
   window.addEventListener('WebComponentsReady', function() {
@@ -58,6 +75,6 @@ Instructions:
 
     Your code goes here too!
      */
-    // getJSON('../data/earth-like-results.json')
+     getJSON('../data/earth-like-results.json').then(addSearchHeader).catch(addSearchHeader);
   });
 })(document);
